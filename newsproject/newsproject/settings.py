@@ -11,8 +11,19 @@ https://docs.djangoproject.com/en/4.1/ref/settings/
 """
 
 from pathlib import Path
+
 import os
-# Build paths inside the project like this: BASE_DIR / 'subdir'.
+
+
+import environ
+
+# Initialise environment variables
+env = environ.Env()
+environ.Env.read_env()  # read .env file, if it exists
+print(env('DJANGO_SECRET_KEY'))
+
+
+# # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 
@@ -20,13 +31,19 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = "django-insecure-a9-5fu#511#@la^zl76ivr1)h+51c*_&9=g_wzxwneswjoijd-"
+# SECRET_KEY = "django-insecure-a9-5fu#511#@la^zl76ivr1)h+51c*_&9=g_wzxwneswjoijd-"
+SECRET_KEY = env('DJANGO_SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-# ALLOWED_HOSTS = []
-ALLOWED_HOSTS = ['192.168.1.22', '127.0.0.1', 'localhost','0.0.0.0']
+# # ALLOWED_HOSTS = []
+# ALLOWED_HOSTS = ['192.168.1.22', '127.0.0.1', 'localhost','0.0.0.0','192.168.1.5']
+# CORS_ALLOW_ALL_ORIGINS = True
+
+DEBUG = env.bool("DEBUG", default=False)
+
+ALLOWED_HOSTS = env.list("ALLOWED_HOSTS", default=['localhost', '127.0.0.1'])
 
 
 # Application definition
@@ -38,6 +55,7 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    'corsheaders',
     'rest_framework',
 
     "newsapp",
@@ -47,11 +65,18 @@ MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
+    'corsheaders.middleware.CorsMiddleware',
+
     "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
+    'whitenoise.middleware.WhiteNoiseMiddleware',
+
 ]
+STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
+STATIC_ROOT = BASE_DIR / "staticfiles"
+
 
 ROOT_URLCONF = "newsproject.urls"
 
@@ -120,13 +145,15 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/4.1/howto/static-files/
 
 STATIC_URL = "static/"
-STATICFILES_DIRS=[
-os.path.join(BASE_DIR, 'static')
-]
+# STATICFILES_DIRS=[
+# os.path.join(BASE_DIR, 'static')
+# ]
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+
 
 
 
