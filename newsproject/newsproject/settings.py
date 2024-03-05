@@ -14,18 +14,18 @@ from pathlib import Path
 
 import os
 
-import environ
+# import environ
 
-# Initialize environ
-env = environ.Env(
-    # set casting, default value
-    ALLOWED_HOSTS=(list, ['localhost', '127.0.0.1']),
-)
+# # Initialize environ
+# env = environ.Env(
+#     # set casting, default value
+#     ALLOWED_HOSTS=(list, ['localhost', '127.0.0.1']),
+# )
 
-# Reading .env file
-environ.Env.read_env()
+# # Reading .env file
+# environ.Env.read_env()
 
-ALLOWED_HOSTS = env.list("ALLOWED_HOSTS", default=['localhost', '127.0.0.1'])
+# ALLOWED_HOSTS = env.list("ALLOWED_HOSTS", default=['localhost', '127.0.0.1'])
 
 
 
@@ -36,17 +36,17 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 
 # SECURITY WARNING: keep the secret key used in production secret!
-# SECRET_KEY = "django-insecure-a9-5fu#511#@la^zl76ivr1)h+51c*_&9=g_wzxwneswjoijd-"
-SECRET_KEY = env('DJANGO_SECRET_KEY')
+SECRET_KEY = "django-insecure-a9-5fu#511#@la^zl76ivr1)h+51c*_&9=g_wzxwneswjoijd-"
+# SECRET_KEY = env('DJANGO_SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-# DEBUG = True
+DEBUG = False
 
-# # ALLOWED_HOSTS = []
-# ALLOWED_HOSTS = ['192.168.1.22', '127.0.0.1', 'localhost','0.0.0.0','192.168.1.5']
-# CORS_ALLOW_ALL_ORIGINS = True
+# ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['192.168.1.22', '127.0.0.1', 'localhost','0.0.0.0','192.168.1.5']
+CORS_ALLOW_ALL_ORIGINS = True
 
-DEBUG = env.bool("DEBUG", default=False)
+# DEBUG = env.bool("DEBUG", default=False)
 
 
 
@@ -149,11 +149,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/4.1/howto/static-files/
 
 STATIC_URL = "static/"
-# STATICFILES_DIRS=[
-# os.path.join(BASE_DIR, 'static')
-# ]
-# Default primary key field type
-# https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
+
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
